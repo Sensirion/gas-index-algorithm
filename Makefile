@@ -1,4 +1,5 @@
-algorithm_sources = sensirion_gas_index_algorithm.h sensirion_gas_index_algorithm.c
+algorithm_src_folder = sensirion_gas_index_algorithm
+algorithm_sources = ${algorithm_src_folder}/sensirion_gas_index_algorithm.h ${algorithm_src_folder}/sensirion_gas_index_algorithm.c
 
 
 CFLAGS = -Os -Wall -fstrict-aliasing -Wstrict-aliasing=1 -Wsign-conversion -fPIC -I.

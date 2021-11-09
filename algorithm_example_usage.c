@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "sensirion_gas_index_algorithm/sensirion_gas_index_algorithm.h"
 #include <stdio.h>  // printf
-#include "sensirion_gas_index_algorithm.h"
 
 /*
  * TO USE CONSOLE OUTPUT (PRINTF) YOU MAY NEED TO ADAPT THE INCLUDE ABOVE OR
@@ -43,11 +43,11 @@ int32_t read_voc_raw() {
 }
 
 int main(void) {
-   
+
     GasIndexAlgorithmParams params;
     GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC);
-    
-    for (int i=0; i<100; i+=1) {
+
+    for (int i = 0; i < 100; i += 1) {
         int32_t voc_ticks = read_voc_raw();
         int32_t voc_index_value = 0;
         GasIndexAlgorithm_process(&params, voc_ticks, &voc_index_value);
