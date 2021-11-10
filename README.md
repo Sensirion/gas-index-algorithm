@@ -38,3 +38,47 @@ Steps to calculate a VOC/NOx gas index value:
    int32_t voc_index_value; 
    GasIndexAlgorithm_process(&params, voc_raw_value, &voc_index_value)
    ```
+
+## Rasperry Pi Example VOC and NOx Index
+
+Steps to run the example on your Raspberry Pi:
+
+1. Connect a SGP41 and SHT4x sensor over I2C to your Raspberry Pi
+2. Download this package from [Sensirion Github Page](https://github.com/Sensirion/sensirion-gas-index-algorithm)
+3. Unzip and extract the .zip, copy the raspberry-pi-algorithm-example folder to your Raspberry Pi
+4. Download the [Raspberyy PI I2C SHT4x driver package](https://github.com/Sensirion/raspberry-pi-i2c-sht4x) and [Raspberyy PI I2C SGP41 driver package](https://github.com/Sensirion/raspberry-pi-i2c-sgp41) from Sensirion Github Page. Extract the ZIPs to subfolders of raspberry-pi-algorithm-example on your Raspberry Pi.
+5. Compile the example
+   1. Open a [terminal](https://www.raspberrypi.org/documentation/usage/terminal/?)
+   2. Navigate to the example directory. E.g. `cd ~/raspberry-pi-algorithm-example`
+   3. Run the `make` command to compile the driver
+6. Run the example with `./algorithm_example_usage` in the same directory you used to compile the example.
+
+
+# Contributing
+
+**Contributions are welcome!**
+
+We develop and test this algorithm using our company internal tools (version
+control, continuous integration, code review etc.) and automatically
+synchronize the master branch with GitHub. But this doesn't mean that we don't
+respond to issues or don't accept pull requests on GitHub. In fact, you're very
+welcome to open issues or create pull requests :)
+
+This Sensirion library uses
+[`clang-format`](https://releases.llvm.org/download.html) to standardize the
+formatting of all our `.c` and `.h` files. Make sure your contributions are
+formatted accordingly:
+
+The `-i` flag will apply the format changes to the files listed.
+
+```bash
+clang-format -i */*.c */*.h
+```
+
+Note that differences from this formatting will result in a failed build until
+they are fixed.
+
+# License
+
+See [LICENSE](LICENSE).
+
