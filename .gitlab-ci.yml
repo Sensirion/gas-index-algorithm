@@ -1,10 +1,15 @@
+include:
+  - local: python-wrapper/.gitlab-ci.yml
+
 variables:
   RASPI_EXAMPLE_FOLDER: examples/raspberry-pi
   RASPI_OUTPUT_FOLDER: raspi-gas-index-algorithm-example
 
 stages:
+  - prepare
   - validate
   - build
+  - deploy
 
 c_syntax_check:
   stage: validate

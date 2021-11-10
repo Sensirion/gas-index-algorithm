@@ -6,4 +6,5 @@ examples/raspberry-pi/sensirion_i2c_hal.*
 examples/raspberry-pi/sgp41_i2c.*
 examples/raspberry-pi/sht4x_i2c.*
 examples/raspberry-pi/sensirion_config.h
+.idea
 
