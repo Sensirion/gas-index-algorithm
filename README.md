@@ -16,14 +16,21 @@ variance of the Sout signal, as well as some additional internal states such as 
 Steps to calculate a VOC/NOx gas index value:
 
 1. Allocate a struct of type **GasIndexAlgorithmParams** and initialize the parameters to their default values.
-   Pass GasIndexAlgorithm_ALGORITHM_TYPE_NOX in case you want to calculate NOx Index.
+   
+   a. For **VOC Engine Algorithm** initialize with: 
    
    ```
    GasIndexAlgorithmParams params;
    GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC);
    ```
+   
+   b. For **NOx Engine Algorithm** initialze with    
+   ```
+   GasIndexAlgorithmParams params;
+   GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_NOX);
+   ```
 2. Read RH and T values, e.g. from a SHT4x sensor
-3. **Read VOC or NOx raw value** (ticks) from SGP4x sensor. Provide RH and T values from step 1 (do consider the specified scaling factors for the different sensors) to the VOC read function to get temperature and humidity compensated raw index value.
+3. **Read VOC or NOx raw value** (ticks) from SGP4x sensor. Provide RH and T values from step 2 (do consider the specified scaling factors for the different sensors) to the VOC read function to get temperature and humidity compensated raw index value.
 4. **Process raw signal** to get index value
    
    ```
