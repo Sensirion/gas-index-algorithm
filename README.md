@@ -30,7 +30,11 @@ Steps to calculate a VOC/NOx gas index value:
    GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_NOX);
    ```
 2. Read RH and T values, e.g. from a SHT4x sensor
-3. **Read VOC or NOx raw value** (ticks) from SGP4x sensor. Provide RH and T values from step 2 (do consider the specified scaling factors for the different sensors) to the VOC read function to get temperature and humidity compensated raw index value.
+   
+3. **Read VOC or NOx raw value** (ticks) from SGP4x sensor. 
+   Provide RH and T values as ticks from step 2 to the VOC read function to get temperature and humidity compensated raw index value.
+   NOTE: do consider that e.g. the RH ticks for SHT4x are specified differently than the RH ticks requested by SGP41, checkout the sensor datasheets for more details.
+
 4. **Process raw signal** to get index value
    
    ```
@@ -39,19 +43,32 @@ Steps to calculate a VOC/NOx gas index value:
    GasIndexAlgorithm_process(&params, voc_raw_value, &voc_index_value)
    ```
 
-## Rasperry Pi Example VOC and NOx Index
+## Raspberry Pi Example VOC and NOx Index
+
+The example measures VOC and NOx ticks with a SGP41 sensor using a SHT4x to compensate temperature and humidity.
+The raw VOC and NOx measurement signals are then processed with the gas index algorithm to get VOC Index and NOx Index values.
+
+For more details about the sensors and breakout boards check out http://sensirion.com/my-sgp-ek/.
 
 Steps to run the example on your Raspberry Pi:
 
 1. Connect a SGP41 and SHT4x sensor over I2C to your Raspberry Pi
-2. Download this package from [Sensirion Github Page](https://github.com/Sensirion/sensirion-gas-index-algorithm)
-3. Unzip and extract the .zip, copy the raspberry-pi-algorithm-example folder to your Raspberry Pi
-4. Download the [Raspberyy PI I2C SHT4x driver package](https://github.com/Sensirion/raspberry-pi-i2c-sht4x) and [Raspberyy PI I2C SGP41 driver package](https://github.com/Sensirion/raspberry-pi-i2c-sgp41) from Sensirion Github Page. Extract the ZIPs to subfolders of raspberry-pi-algorithm-example on your Raspberry Pi.
-5. Compile the example
+2. Download this package from [Sensirion Github Page](https://github.com/Sensirion/gas-index-algorithm).
+   Extract the ZIP file and navigate to the subfolder `examples/raspberry-pi`
+3. Get additional source files:
+   1. Run `make download`
+   2. If the download with make does not work, you can manually get the needed source files:
+      - Download [Raspberyy PI I2C SHT4x driver package](https://github.com/Sensirion/raspberry-pi-i2c-sht4x). 
+        Extract ZIP and add all `*.c` and `*.h` files to `examples/raspberry-pi/`
+      - Download [Raspberyy PI I2C SGP41 driver package](https://github.com/Sensirion/raspberry-pi-i2c-sgp41).
+        Extract ZIP and copy `sgp41.c` and `sgp41.h` to `examples/raspberry-pi/`
+      - Copy content of folder `sensirion_gas_index_algorithm` to `examples/raspberry-pi`
+4. Copy the `examples/raspberry-pi` folder to your Raspberry Pi
+5. Compile the example on your Raspberry Pi
    1. Open a [terminal](https://www.raspberrypi.org/documentation/usage/terminal/?)
-   2. Navigate to the example directory. E.g. `cd ~/raspberry-pi-algorithm-example`
-   3. Run the `make` command to compile the driver
-6. Run the example with `./algorithm_example_usage` in the same directory you used to compile the example.
+   2. Navigate to the example directory. E.g. `cd ~/examples/raspberry-pi`
+   3. Run `make all` to compile the driver
+6. Run the example with `./algorithm_example_usage`
 
 
 # Contributing

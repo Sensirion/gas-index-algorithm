@@ -29,13 +29,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "sensirion_gas_index_algorithm/sensirion_gas_index_algorithm.h"
+#include "sensirion_gas_index_algorithm.h"
 #include <stdio.h>  // printf
 
-#include "raspberry-pi-i2c-sgp41/sensirion_common.h"
-#include "raspberry-pi-i2c-sgp41/sensirion_i2c_hal.h"
-#include "raspberry-pi-i2c-sgp41/sgp41_i2c.h"
-#include "raspberry-pi-i2c-sht4x/sht4x_i2c.h"
+#include "sensirion_common.h"
+#include "sensirion_i2c_hal.h"
+#include "sgp41_i2c.h"
+#include "sht4x_i2c.h"
 
 uint16_t DEFAULT_COMPENSATION_RH = 0x8000;  // in ticks as defined by SGP41
 uint16_t DEFAULT_COMPENSATION_T = 0x6666;   // in ticks as defined by SGP41
