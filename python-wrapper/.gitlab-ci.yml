@@ -26,15 +26,31 @@ check_editorconfig:
 
 py3p6_linux_build:
   extends: .py3p6_linux_build_v2
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - python-wrapper/dist/
 
 py3p8_linux_sdist:
   extends: .py3p8_linux_sdist_v2
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - python-wrapper/dist/
 
 py3p8_linux_build:
   extends: .py3p8_linux_build_v2
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - python-wrapper/dist/
 
 py3p8_64bit_win_build:
   extends: .py3p8_64bit_win_docker_build_v2
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - python-wrapper/dist/
 
 py3p8_osx_build:
   stage: build
@@ -47,7 +63,7 @@ py3p8_osx_build:
   artifacts:
     expire_in: 1 week
     paths:
-      - dist/
+      - python-wrapper/dist/
 
 build_docs:
   extends: .build_docs_v2
@@ -58,12 +74,17 @@ build_docs:
     - cd docs && make html
   after_script: [] # overwrite after_script from template
   artifacts:
-    paths: [docs/_build]
+    paths:
+      - python-wrapper/docs/_build
     expire_in: 1 week
     when: always
 
 deploy_staging:
   extends: .deploy_staging_v2
+  before_script:
+    # For performance and stability reasons, use offline installation.
+    - pip install --no-index --find-links=/pip devpi-client
+    - cd python-wrapper
 
 deploy_stable:
   extends: .deploy_stable_v2
