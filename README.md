@@ -71,6 +71,11 @@ Steps to run the example on your Raspberry Pi:
 6. Run the example with `./algorithm_example_usage`
 
 
+# Python Example
+
+Find the Python usage and documentation in the [Python README](python-wrapper/README.rst).
+
+
 # Contributing
 
 **Contributions are welcome!**
