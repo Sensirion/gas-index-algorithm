@@ -1,15 +1,25 @@
 Sensirion Gas Index Algorithm
 =============================
 
-SGP4x VOC/NOx Engine Algorithm applies a gain-offset normalization algorithm to a SGP tick signal. The algorithm 
-assumes a humidity compensated raw tick signal, applies state estimation, tick-to-GasIndex conversion and an 
-adaptive lowpass filter.
+Sensirion's Gas Index Algorithm software provides a VOC and an NOx Index output signal calculated from the SGP40/41 raw
+signal inputs `SRAW_VOC` and `SRAW_NOX`. Note: for SGP40, only `SRAW_VOC` is available. This algorithm enables robust detection of
+ambient changes of VOCs and NOx with minimal sensor-to-sensor variation. The algorithm is based on a statistical gain-offset
+normalization and adapts both parameters constantly applying an exponentially decaying function of the learned parameters to
+be able to adapt to changing environments.
 
-The main goal of the VOC/NOX Engine algorithm is to calculate a VOC/NOx Index signal that enables robust detection of ambient
-VOC/NOx changes, with minimal sensor-to-sensor variations. The Algorithm Engine calculates the VOC/NOx Index signal 
-recursively from a single raw tick value Sout that is measured by the SGP sensor at each time step, as well as internal 
-states that are updated at each time step. These internal states are most importantly the recursively estimated mean and 
-variance of the Sout signal, as well as some additional internal states such as uptime and other counters.
+For the VOC Index output, the software must be instanced as VOC Algorithm while for the NOx Index output, the software must
+be instanced as NOx Algorithm. It is important to feed the raw signals to the corresponding algorithm (i.e., `SRAW_VOC` to the
+VOC Algorithm and `SRAW_NOX` to the NOx Algorithm) at a constant sampling interval which must coincide with the sampling
+interval that is used to read out the raw signals from the SGP40/41 sensor. The default sampling interval applied in the
+algorithm is 1 s. In case, a different sampling interval should be used the definition of the sampling interval in the h.file
+of the algorithm must be changed, too.
+
+The algorithm calculates the VOC and NOx Index signals recursively from a single raw tick value of `SRAW_VOC` and `SRAW_NOX`,
+respectively, which are both measured by the SGP40/41 sensor at each time step, as well as internal states that are updated
+at each time step. These internal states are most importantly the recursively estimated mean and variance of the
+corresponding `SRAW` signal as well as some additional internal states such as uptime and other counters. After estimating the
+states, the algorithm converts the raw signals in ticks into either VOC or NOx Index, respectively, and applies an adaptive
+low-pass filter.
 
 
 Install
