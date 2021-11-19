@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - DATE TBD
+## [3.1.0] - 2021-11-19
 
 Sensirion VOC/NOx Engine algorithm, algorithm version 3.1.
 
-[0.1.0]: URL TBD - POINT TO GITHUB TAG FOR THIS VERSION
+[0.1.0]: https://github.com/Sensirion/gas-index-algorithm/releases/tag/0.1.0 
 
