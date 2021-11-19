@@ -1,4 +1,4 @@
-# Sensirion Embedded Gas Index Algorithm
+# Sensirion Gas Index Algorithm
 
 Sensirion's Gas Index Algorithm software provides a VOC and an NOx Index output signal calculated from the SGP40/41 raw
 signal inputs `SRAW_VOC` and `SRAW_NOX`. Note: for SGP40, only `SRAW_VOC` is available. This algorithm enables robust detection of
