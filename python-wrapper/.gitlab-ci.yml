@@ -88,6 +88,7 @@ deploy_staging:
 
 deploy_stable:
   extends: .deploy_stable_v2
+  needs: [py3p8_linux_sdist, py3p8_64bit_win_build]
   environment:
     name: pypi.org
     url: https://pypi.org/project/sensirion-gas-index-algorithm/
