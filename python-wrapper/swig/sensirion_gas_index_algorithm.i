@@ -14,6 +14,8 @@
                          int32_t* gating_max_duration_minutes,
                          int32_t* std_initial,
                          int32_t* gain_factor } ;
+%apply float *OUTPUT {float* samp_int};
+%apply int32_t *OUTPUT {int32_t* gas_index};
 
 %{
 #include "sensirion_gas_index_algorithm.h"
@@ -65,12 +67,12 @@
             gating_max_duration_minutes, std_initial, gain_factor);
     }
 
-    void get_sampling_interval(float* sampling_interval) {
-        GasIndexAlgorithm_get_sampling_interval($self, sampling_interval);
+    void get_sampling_interval(float* samp_int) {
+        GasIndexAlgorithm_get_sampling_interval($self, samp_int);
     }
     
-    void set_sampling_interval(float sampling_interval) {
-        GasIndexAlgorithm_set_sampling_interval($self, sampling_interval);
+    void set_sampling_interval(float samp_int) {
+        GasIndexAlgorithm_set_sampling_interval($self, samp_int);
     }
 
 	int32_t process(int32_t sraw) {
