@@ -65,6 +65,14 @@
             gating_max_duration_minutes, std_initial, gain_factor);
     }
 
+    void get_sampling_interval(float* sampling_interval) {
+        GasIndexAlgorithm_get_sampling_interval($self, sampling_interval);
+    }
+    
+    void set_sampling_interval(float sampling_interval) {
+        GasIndexAlgorithm_set_sampling_interval($self, sampling_interval);
+    }
+
 	int32_t process(int32_t sraw) {
 		int32_t gas_index;
 		GasIndexAlgorithm_process($self, sraw, &gas_index);
