@@ -30,3 +30,17 @@ def test_voc_algorithm_process():
         algorithm.process(1337)
     index = algorithm.process(1337)
     assert index == 100
+
+
+def test_get_sampling_interval():
+    algorithm = VocAlgorithm()
+    # after a few 100 samples we should reach mean
+    assert algorithm.get_sampling_interval() == 1.0
+
+
+def test_set_sampling_interval():
+    algorithm = VocAlgorithm()
+    # after a few 100 samples we should reach mean
+    test_value = 2.0
+    algorithm.set_sampling_interval(test_value)
+    assert algorithm.get_sampling_interval() == test_value
