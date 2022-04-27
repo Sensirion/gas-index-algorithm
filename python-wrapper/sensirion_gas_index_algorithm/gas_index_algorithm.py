@@ -69,11 +69,31 @@ class GasIndexAlgorithm(object):
         .. note:: The parameters learning_time_gain_hours and std_initial have no effect
                   for the NOx gas index algorithm.
         """
-        return self._algorithm.set_tuning_parameters(index_offset,
-                                                     learning_time_offset_hours,
-                                                     learning_time_gain_hours,
-                                                     gating_max_duration_minutes,
-                                                     std_initial, gain_factor)
+        self._algorithm.set_tuning_parameters(index_offset,
+                                              learning_time_offset_hours,
+                                              learning_time_gain_hours,
+                                              gating_max_duration_minutes,
+                                              std_initial, gain_factor)
+
+    def get_sampling_interval(self):
+        """
+        Get the sampling interval used by the algorithm.
+
+        :return:
+            - tuning_parameter
+        """
+        return self._algorithm.get_sampling_interval()
+
+    def set_sampling_interval(self, sampling_interval: float):
+        """
+        Set the sampling interval to be used by the algorithm.
+        Should be used if it differs from the default value of 1 second, which is relevant for some low power
+        configurations for example.
+
+        :param sampling_interval:
+            The sampling interval to be used by the algorithm
+        """
+        self._algorithm.set_sampling_interval(sampling_interval)
 
     def process(self, s_sgp: int):
         """Feed the engine and return compensated value.

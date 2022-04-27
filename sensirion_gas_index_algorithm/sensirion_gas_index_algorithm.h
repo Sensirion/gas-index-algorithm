@@ -66,7 +66,7 @@ typedef int32_t fix16_t;
 
 #define GasIndexAlgorithm_ALGORITHM_TYPE_VOC (0)
 #define GasIndexAlgorithm_ALGORITHM_TYPE_NOX (1)
-#define GasIndexAlgorithm_SAMPLING_INTERVAL (1.)
+#define GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL (1.)
 #define GasIndexAlgorithm_INITIAL_BLACKOUT (45.)
 #define GasIndexAlgorithm_INDEX_GAIN (230.)
 #define GasIndexAlgorithm_SRAW_STD_INITIAL (50.)
@@ -164,6 +164,7 @@ typedef struct {
     fix16_t m_Adaptive_Lowpass___X1;
     fix16_t m_Adaptive_Lowpass___X2;
     fix16_t m_Adaptive_Lowpass___X3;
+    float m_sampling_interval;
 } GasIndexAlgorithmParams;
 
 /**
@@ -264,6 +265,22 @@ void GasIndexAlgorithm_get_tuning_parameters(
     int32_t* learning_time_offset_hours, int32_t* learning_time_gain_hours,
     int32_t* gating_max_duration_minutes, int32_t* std_initial,
     int32_t* gain_factor);
+
+/**
+ * Set the sampling interval parameter.
+ * Should be used if it differs from the default value of 1 second.
+ *
+ * @param params      Pointer to the GasIndexAlgorithmParams struct
+ * @param samp_int    The used sampling interval
+ */
+void GasIndexAlgorithm_set_sampling_interval(GasIndexAlgorithmParams* params,
+                                             float samp_int);
+
+/**
+ * Get the sampling interval parameter used by the algorithm.
+ */
+void GasIndexAlgorithm_get_sampling_interval(
+    const GasIndexAlgorithmParams* params, float* samp_int);
 
 /**
  * Calculate the gas index value from the raw sensor value.
