@@ -80,7 +80,7 @@ class GasIndexAlgorithm(object):
         Get the sampling interval used by the algorithm.
 
         :return:
-            - tuning_parameter
+            The sampling interval in seconds
         """
         return self._algorithm.get_sampling_interval()
 
