@@ -1,6 +1,7 @@
 driver_common_sources = sensirion_common.c sensirion_i2c.c sensirion_i2c_hal.c
 driver_common_headers = $(driver_common_sources:%.c=%.h)
 sgp41_sources = sgp41_i2c.c
+sgp40_sources = sgp40_i2c.c
 sht4x_sources = sht4x_i2c.c
 sht4x_version = 0.1.0
 sht4x_release_name = raspberry-pi-i2c-sht4x-${sht4x_version}
@@ -29,6 +30,8 @@ download:
 	tar --strip-components=1 -xzf ${sht4x_tarball} $(sht4x_sources:%.c=${sht4x_release_name}/%.h)
 	wget -q -O sgp41_i2c.c https://raw.githubusercontent.com/Sensirion/raspberry-pi-i2c-sgp41/master/sgp41_i2c.c
 	wget -q -O sgp41_i2c.h https://raw.githubusercontent.com/Sensirion/raspberry-pi-i2c-sgp41/master/sgp41_i2c.h
+	wget -q -O sgp40_i2c.c https://raw.githubusercontent.com/Sensirion/raspberry-pi-i2c-sgp40/master/sgp40_i2c.c
+	wget -q -O sgp40_i2c.h https://raw.githubusercontent.com/Sensirion/raspberry-pi-i2c-sgp40/master/sgp40_i2c.h
 	rm -f ${sht4x_tarball}
 	cp ${algorithm_dir}/sensirion_gas_index_algorithm.c .
 	cp ${algorithm_dir}/sensirion_gas_index_algorithm.h .
@@ -36,5 +39,9 @@ download:
 algorithm_example_usage:
 	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp41_sources} ${sht4x_sources} ${algorithm_sources} algorithm_example_usage.c
 
+low_power_example:
+	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp40_sources} ${sht4x_sources} ${algorithm_sources} low_power_example.c
+
 clean:
 	$(RM) algorithm_example_usage
+	$(RM) low_power_example
