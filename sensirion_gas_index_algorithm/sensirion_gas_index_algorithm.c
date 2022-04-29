@@ -390,6 +390,7 @@ static void GasIndexAlgorithm__init_instances(GasIndexAlgorithmParams* params) {
     GasIndexAlgorithm__adaptive_lowpass__set_parameters(params);
 }
 
+
 void GasIndexAlgorithm_get_sampling_interval(
     const GasIndexAlgorithmParams* params, int32_t* samp_int) {
     *samp_int = fix16_cast_to_int(params->m_sampling_interval);
