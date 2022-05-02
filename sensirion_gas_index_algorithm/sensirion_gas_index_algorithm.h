@@ -167,6 +167,8 @@ typedef struct {
     float m_sampling_interval;
 } GasIndexAlgorithmParams;
 
+extern const float default_sampling_interval;
+
 /**
  * Initialize the gas index algorithm parameters for the specified algorithm
  * type and reset its internal states. Call this once at the beginning.
@@ -176,6 +178,18 @@ typedef struct {
  */
 void GasIndexAlgorithm_init(GasIndexAlgorithmParams* params,
                             int32_t algorithm_type);
+
+/**
+ * Initialize the gas index algorithm parameters for the specified algorithm
+ * type, and sampling interval. It then resets its internal states.
+ * Call this once at the beginning.
+ * @param params            Pointer to the GasIndexAlgorithmParams struct
+ * @param algorithm_type    0 (GasIndexAlgorithm_ALGORITHM_TYPE_VOC) for VOC or
+ *                          1 (GasIndexAlgorithm_ALGORITHM_TYPE_NOX) for NOx
+ * @param samp_int          The used sampling interval
+ */
+void GasIndexAlgorithm_init_ext(GasIndexAlgorithmParams* params,
+                            int32_t algorithm_type, float samp_int);
 
 /**
  * Reset the internal states of the gas index algorithm. Previously set tuning
@@ -265,16 +279,6 @@ void GasIndexAlgorithm_get_tuning_parameters(
     int32_t* learning_time_offset_hours, int32_t* learning_time_gain_hours,
     int32_t* gating_max_duration_minutes, int32_t* std_initial,
     int32_t* gain_factor);
-
-/**
- * Set the sampling interval parameter.
- * Should be used if it differs from the default value of 1 second.
- *
- * @param params      Pointer to the GasIndexAlgorithmParams struct
- * @param samp_int    The used sampling interval
- */
-void GasIndexAlgorithm_set_sampling_interval(GasIndexAlgorithmParams* params,
-                                             float samp_int);
 
 /**
  * Get the sampling interval parameter used by the algorithm.

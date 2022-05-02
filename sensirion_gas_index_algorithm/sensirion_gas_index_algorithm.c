@@ -41,6 +41,8 @@
 /*!< fix16_t value of 1 */
 #define FIX16_ONE 0x00010000
 
+const float default_sampling_interval = GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL;
+
 static inline fix16_t fix16_from_int(int32_t a) {
     return a * FIX16_ONE;
 }
@@ -321,7 +323,13 @@ GasIndexAlgorithm__adaptive_lowpass__process(GasIndexAlgorithmParams* params,
 void GasIndexAlgorithm_init(GasIndexAlgorithmParams* params,
                             int32_t algorithm_type) {
 
-    params->m_sampling_interval = GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL;
+    GasIndexAlgorithm_init_ext(params, algorithm_type, GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL);
+}
+
+void GasIndexAlgorithm_init_ext(GasIndexAlgorithmParams* params,
+                            int32_t algorithm_type, float samp_int) {
+
+    params->m_sampling_interval = samp_int;
     params->mAlgorithm_Type = algorithm_type;
     if ((algorithm_type == GasIndexAlgorithm_ALGORITHM_TYPE_NOX)) {
         params->mIndex_Offset = F16(GasIndexAlgorithm_NOX_INDEX_OFFSET_DEFAULT);
@@ -376,11 +384,6 @@ static void GasIndexAlgorithm__init_instances(GasIndexAlgorithmParams* params) {
             F16(GasIndexAlgorithm_VOC_INDEX_OFFSET_DEFAULT));
     }
     GasIndexAlgorithm__adaptive_lowpass__set_parameters(params);
-}
-
-void GasIndexAlgorithm_set_sampling_interval(GasIndexAlgorithmParams* params,
-                                             float samp_int) {
-    params->m_sampling_interval = samp_int;
 }
 
 void GasIndexAlgorithm_get_sampling_interval(

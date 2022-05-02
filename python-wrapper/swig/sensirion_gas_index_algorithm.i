@@ -23,18 +23,19 @@
 
 %include "sensirion_gas_index_algorithm.h"
 %extend GasIndexAlgorithmParams {
-	GasIndexAlgorithmParams(int32_t algorithm_type) {
+	GasIndexAlgorithmParams(int32_t algorithm_type, float sampling_interval) {
 		GasIndexAlgorithmParams *params;
 		params = (GasIndexAlgorithmParams *) malloc(sizeof(GasIndexAlgorithmParams));
-		GasIndexAlgorithm_init(params, algorithm_type);
+		GasIndexAlgorithm_init_ext(params, algorithm_type, sampling_interval);
 		return params;
 	}
+
 	~GasIndexAlgorithmParams() {
 		free($self);
 	}
 
-	void init(int32_t algorithm_type) {
-		GasIndexAlgorithm_init($self, algorithm_type);
+	void init(int32_t algorithm_type, float sampling_interval) {
+		GasIndexAlgorithm_init_ext($self, algorithm_type, sampling_interval);
 	}
 
     void get_states(int32_t* state0, int32_t* state1) {
@@ -69,10 +70,6 @@
 
     void get_sampling_interval(float* samp_int) {
         GasIndexAlgorithm_get_sampling_interval($self, samp_int);
-    }
-    
-    void set_sampling_interval(float samp_int) {
-        GasIndexAlgorithm_set_sampling_interval($self, samp_int);
     }
 
 	int32_t process(int32_t sraw) {
