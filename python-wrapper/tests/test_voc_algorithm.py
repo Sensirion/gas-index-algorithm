@@ -9,6 +9,15 @@ def test_voc_algorithm():
     assert isinstance(out, int)
 
 
+def test_voc_algorithm_with_sampling_interval():
+    algorithm = VocAlgorithm(sampling_interval=2)
+    algorithm_version = algorithm.get_version()
+    assert isinstance(algorithm_version, str)
+    out = algorithm.process(1)
+    assert isinstance(out, int)
+    assert algorithm.get_sampling_interval() == 2
+
+
 def test_voc_algorithm_get_set_states():
     algorithm = VocAlgorithm()
     algorithm.set_states(1, 2)
@@ -34,13 +43,4 @@ def test_voc_algorithm_process():
 
 def test_get_sampling_interval():
     algorithm = VocAlgorithm()
-    # after a few 100 samples we should reach mean
-    assert algorithm.get_sampling_interval() == 1.0
-
-
-def test_set_sampling_interval():
-    algorithm = VocAlgorithm()
-    # after a few 100 samples we should reach mean
-    test_value = 2.0
-    algorithm.set_sampling_interval(test_value)
-    assert algorithm.get_sampling_interval() == test_value
+    assert algorithm.get_sampling_interval() == 1

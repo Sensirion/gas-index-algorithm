@@ -11,9 +11,9 @@ log = logging.getLogger(__name__)
 
 class VocAlgorithm(gas_index_algorithm.GasIndexAlgorithm):
 
-    def __init__(self):
+    def __init__(self, sampling_interval: int = sensirion_gas_index_algorithm_wrap.default_sampling_interval):
         log.debug("Instance of VocAlgorithm created.")
-        super().__init__(sensirion_gas_index_algorithm_wrap.GasIndexAlgorithm_ALGORITHM_TYPE_VOC)
+        super().__init__(sensirion_gas_index_algorithm_wrap.GasIndexAlgorithm_ALGORITHM_TYPE_VOC, sampling_interval)
 
     def set_states(self, state0, state1):
         """
