@@ -1,3 +1,6 @@
+import csv
+import os
+
 from sensirion_gas_index_algorithm.voc_algorithm import VocAlgorithm
 
 
@@ -32,7 +35,7 @@ def test_voc_algorithm_get_set_tuning_parameters():
     assert [1, 2, 3, 4, 5, 6] == algorithm.get_tuning_parameters()
 
 
-def test_voc_algorithm_process():
+def test_voc_algorithm_process_reaches_stable_state():
     algorithm = VocAlgorithm()
     # after a few 100 samples we should reach mean
     for n in range(200):
@@ -44,3 +47,13 @@ def test_voc_algorithm_process():
 def test_get_sampling_interval():
     algorithm = VocAlgorithm()
     assert algorithm.get_sampling_interval() == 1
+
+
+def test_voc_algorithm_process():
+    algorithm = VocAlgorithm()
+    # open the file in the read mode
+    path = os.path.join(os.path.dirname(__file__), 'data', 'voc.csv')
+    with open(path, 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            assert int(row[1]) == algorithm.process(int(row[0]))
