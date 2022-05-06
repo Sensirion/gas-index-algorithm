@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Sensirion AG
+ * Copyright (c) 2022, Sensirion AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@
 #include "sgp40_i2c.h"
 #include "sht4x_i2c.h"
 
-uint16_t DEFAULT_COMPENSATION_RH = 0x8000;  // in ticks as defined by SGP41
-uint16_t DEFAULT_COMPENSATION_T = 0x6666;   // in ticks as defined by SGP41
+uint16_t DEFAULT_COMPENSATION_RH = 0x8000;  // in ticks as defined by SGP40
+uint16_t DEFAULT_COMPENSATION_T = 0x6666;   // in ticks as defined by SGP40
 
 
 void read_compensation_values(uint16_t* compensation_rh,
@@ -50,8 +50,8 @@ int main(void) {
     uint16_t compensation_t = DEFAULT_COMPENSATION_T;
     uint16_t sraw_voc = 0;
     int32_t voc_index_value = 0;
-    // Sampling interval can be modified in low power mode
-    // 1s = 20% / 10s = 2%
+    // Sampling interval in seconds
+    // Set to 1s for 20% duty cycle or 10s for 2% duty cycle 
     int32_t sampling_interval = 1;
 
     // initialize gas index parameters
@@ -67,7 +67,7 @@ int main(void) {
         // Therefore we take into account the heater delay and the measurement delays.
         sensirion_i2c_hal_sleep_usec(((uint32_t)(sampling_interval*1000)-170-60-10)*1000);
 
-        // 2. Measure SHT4x  RH and T signals and convert to SGP41 ticks
+        // 2. Measure SHT4x  RH and T signals and convert to SGP40 ticks
         read_compensation_values(&compensation_rh, &compensation_t);
 
         // 3. Measure SGP40 signal with low power mode
@@ -120,8 +120,8 @@ int main(void) {
 void read_compensation_values(uint16_t* compensation_rh,
                               uint16_t* compensation_t) {
     int16_t error = 0;
-    float s_rh = 0;
-    float s_temperature = 0;
+    float s_rh = 0;  // %RH
+    float s_temperature = 0; // degC
     error = sht4x_measure_high_precision(&s_temperature, &s_rh);
     if (error) {
         printf("Error executing sht4x_measure_high_precision(): %i\n", error);
@@ -131,8 +131,9 @@ void read_compensation_values(uint16_t* compensation_rh,
     } else {
         printf("T: %.2f\tRH: %.2f\n", s_temperature, s_rh);
 
-        // convert temperature and humidity to ticks as defined by SGP41
-        // interface NOTE: in case you read RH and T raw signals check out the
+        // convert temperature and humidity to ticks as defined by SGP40
+        // interface 
+        // NOTE: in case you read RH and T raw signals check out the
         // ticks specification in the datasheet, as they can be different for
         // different sensors
         *compensation_rh = (uint16_t)s_rh * 65535 / 100;
