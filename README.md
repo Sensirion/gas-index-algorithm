@@ -84,6 +84,24 @@ Steps to run the example on your Raspberry Pi:
 
 Find the Python usage and documentation in the [Python README](python-wrapper/README.rst).
 
+# Algorithm usage with SGP40 in low power mode
+The provided low power examples (python+raspberry) demonstrate how to run the SGP40 sensor in low power mode and apply 
+the VOC index algorithm to the acquired data. Reduced power consumption is achieved by turning off the heater after 
+each measurement. The heater is then turned back on by calling for a first ignored measurement that precedes the actual 
+measurement call by 170ms. 
+
+To achieve further power consumption reduction, the sampling interval can be increased to 10s (from the default 1s). 
+Note that the sampling frequency needs to be passed to the VOC algorithm at initialization.
+
+The following two low power modes have been tested:  
+
+Duty cycle | Sampling interval | Average  power  consumption at 1.8V
+ --- | --- | --- 
+Continuous | 1 s | 6.3mW
+20%| 1 s | <2.0mW
+2%| 10 s | <0.2mW
+
+
 
 # Contributing
 
