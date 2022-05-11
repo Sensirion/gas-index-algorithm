@@ -13,6 +13,7 @@ The following example generates the required wrapper and builds a source package
 
 ```sh
 ./generate_swig_wrapper.sh
+pip install -e.
 python setup.py sdist bdist_wheel
 ```
 
