@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2022-05-19
+
+Add low power examples and allow changing sampling interval on startup
+
+
 ## [3.1.0] - 2021-11-19
 
 Sensirion VOC/NOx Engine algorithm, algorithm version 3.1.
 
-[0.1.0]: https://github.com/Sensirion/gas-index-algorithm/releases/tag/0.1.0 
+[Unreleased]: https://github.com/Sensirion/gas-index-algorithm/compare/3.2.0..master
+[3.2.0]: https://github.com/Sensirion/gas-index-algorithm/compare/3.1.0..3.2.0
+[3.1.0]: https://github.com/Sensirion/gas-index-algorithm/releases/tag/3.1.0
 
