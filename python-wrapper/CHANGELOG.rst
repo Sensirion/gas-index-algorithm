@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+3.2.0
+:::::
+
+- Add low power examples
+- Allow chaning of sampling interval
+
 3.1.0
 :::::
 
