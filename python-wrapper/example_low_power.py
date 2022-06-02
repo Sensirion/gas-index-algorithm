@@ -15,13 +15,12 @@ from sensirion_i2c_sht.shtc3 import Shtc3I2cDevice
 from sensirion_gas_index_algorithm.voc_algorithm import VocAlgorithm
 
 # Sampling interval in seconds
-# Set to 1 second for 20% power mode (default)
-# Set to 10 seconds for 2% power mode
+# This code uses a fixed heating pulse of ca. 200 ms for the measurement and thus,
+# the sampling interval defines the duty cycle
 sampling_interval = 1
 
 voc_algorithm = VocAlgorithm(sampling_interval)
 
-HEATER_WARMUP_DURATION = 0.17  # in seconds
 # Connect to the SensorBridge with default settings:
 #  - baudrate:      460800
 #  - slave address: 0
@@ -51,14 +50,14 @@ with ShdlcSerialPort(port='COM1', baudrate=460800) as port:
     for _ in range(120):
         # Sleep to have a loop duration matching the sampling interval
         # taking into account heater and measurement delays
-        time.sleep(sampling_interval - HEATER_WARMUP_DURATION - 0.06 - 0.01)
+        time.sleep(sampling_interval - 0.24)
         temperature, humidity = shtc3.measure()
 
         # Request a VOC measurement to start the heater
         sgp40.measure_raw(temperature=temperature.degrees_celsius,
                           relative_humidity=humidity.percent_rh)
 
-        time.sleep(HEATER_WARMUP_DURATION)
+        time.sleep(0.17)
 
         # Request the actual VOC measurement
         sraw_voc = sgp40.measure_raw(temperature=temperature.degrees_celsius,
@@ -69,6 +68,6 @@ with ShdlcSerialPort(port='COM1', baudrate=460800) as port:
 
         # use default formatting for printing output:
         voc_index = voc_algorithm.process(sraw_voc.ticks)
-        print("VOC Index: {}".format(voc_index))
+        print("VOC Index: {}    SRAW_VOC: {}".format(voc_index, sraw_voc))
 
     bridge.switch_supply_off(SensorBridgePort.ONE)
