@@ -51,7 +51,8 @@ int main(void) {
     uint16_t sraw_voc = 0;
     int32_t voc_index_value = 0;
     // Sampling interval in seconds
-    // Set to 1s for 20% duty cycle or 10s for 2% duty cycle 
+    // This code uses a fixed heating pulse of ca. 200 ms for the measurement and thus,
+    // the sampling interval defines the duty cycle
     int32_t sampling_interval = 1;
 
     // initialize gas index parameters
@@ -65,7 +66,7 @@ int main(void) {
 
         // 1. Sleep: Total loop time should match the chosen sampling interval
         // Therefore we take into account the heater delay and the measurement delays.
-        sensirion_i2c_hal_sleep_usec(((uint32_t)(sampling_interval*1000)-170-60-10)*1000);
+        sensirion_i2c_hal_sleep_usec(((uint32_t)(sampling_interval*1000)-240)*1000);
 
         // 2. Measure SHT4x  RH and T signals and convert to SGP40 ticks
         read_compensation_values(&compensation_rh, &compensation_t);
