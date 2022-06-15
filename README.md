@@ -51,6 +51,16 @@ Steps to calculate a VOC/NOx gas index value:
    int32_t voc_index_value; 
    GasIndexAlgorithm_process(&params, voc_raw_value, &voc_index_value)
    ```
+## Fix point version
+
+If your platform does not support floating point you can use the fixpoint version of the algorithm.
+The code can be found in the folder sensirion_gas_index_algorithm_fixpoint.
+
+This version does not provide an interface to change the sampling rate from code to allow minimal
+code size. The sampling rate can be change in the header file
+`sensirion_gas_index_algorithm_fixpoint/sensirion_gas_index_algorithm.h` by changing the define
+`GasIndexAlgorithm_SAMPLING_INTERVAL` on line `69`-
+
 
 ## Raspberry Pi Example VOC and NOx Index
 

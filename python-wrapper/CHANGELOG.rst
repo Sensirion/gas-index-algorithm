@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+3.2.1
+:::::
+
+- Use floating point version of Gas Index Algorithm
+
 3.2.0
 :::::
 
