@@ -33,7 +33,7 @@ Steps to calculate a VOC/NOx gas index value:
    GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC);
    ```
    
-   b. For **NOx Engine Algorithm** initialze with    
+   b. For **NOx Engine Algorithm** initialze with
    ```
    GasIndexAlgorithmParams params;
    GasIndexAlgorithm_init(&params, GasIndexAlgorithm_ALGORITHM_TYPE_NOX);
@@ -93,7 +93,7 @@ measurement call by 170ms.
 To achieve further power consumption reduction, the sampling interval can be increased to 10s (from the default 1s). 
 Note that the sampling frequency needs to be passed to the VOC algorithm at initialization.
 
-The following two low power modes have been tested:  
+The following two low power modes have been tested:
 
 Duty cycle | Sampling interval | Average  power  consumption at 1.8V
  --- | --- | --- 

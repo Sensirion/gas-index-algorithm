@@ -53,11 +53,11 @@ int main(void) {
     // Sampling interval in seconds
     // This code uses a fixed heating pulse of ca. 200 ms for the measurement and thus,
     // the sampling interval defines the duty cycle
-    int32_t sampling_interval = 1;
+    float sampling_interval = 1.f;
 
     // initialize gas index parameters
     GasIndexAlgorithmParams voc_params;
-    GasIndexAlgorithm_init_ext(&voc_params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC, sampling_interval);
+    GasIndexAlgorithm_init_with_sampling_interval(&voc_params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC, sampling_interval);
 
     // initialize i2c communication used for SHT4x and SGP40
     sensirion_i2c_hal_init();

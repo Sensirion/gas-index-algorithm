@@ -9,7 +9,7 @@ sht4x_tarball = ${sht4x_release_name}.tar.gz
 algorithm_dir = ../../sensirion_gas_index_algorithm
 algorithm_sources = sensirion_gas_index_algorithm.c
 
-
+LDFLAGS = -lm
 CFLAGS = -Os -Wall -fstrict-aliasing -Wstrict-aliasing=1 -Wsign-conversion -fPIC -I.
 
 ifdef CI
@@ -37,10 +37,10 @@ download:
 	cp ${algorithm_dir}/sensirion_gas_index_algorithm.h .
 
 algorithm_example_usage:
-	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp41_sources} ${sht4x_sources} ${algorithm_sources} algorithm_example_usage.c
+	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp41_sources} ${sht4x_sources} ${algorithm_sources} algorithm_example_usage.c $(LDFLAGS)
 
 low_power_example:
-	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp40_sources} ${sht4x_sources} ${algorithm_sources} low_power_example.c
+	$(CC) $(CFLAGS) -o $@ ${driver_common_sources} ${sgp40_sources} ${sht4x_sources} ${algorithm_sources} low_power_example.c $(LDFLAGS)
 
 clean:
 	$(RM) algorithm_example_usage

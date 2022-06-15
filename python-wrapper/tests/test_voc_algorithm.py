@@ -1,5 +1,6 @@
 import csv
 import os
+import pytest
 
 from sensirion_gas_index_algorithm.voc_algorithm import VocAlgorithm
 
@@ -56,4 +57,4 @@ def test_voc_algorithm_process():
     with open(path, 'r') as f:
         reader = csv.reader(f)
         for row in reader:
-            assert int(row[1]) == algorithm.process(int(row[0]))
+            assert int(row[1]) == pytest.approx(algorithm.process(int(row[0])), 1.0)
