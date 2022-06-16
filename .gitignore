@@ -1,4 +1,5 @@
 examples/raspberry-pi/algorithm_example_usage
+examples/raspberry-pi/low_power_example
 examples/raspberry-pi/sensirion_common.*
 examples/raspberry-pi/sensirion_gas_index_algorithm.*
 examples/raspberry-pi/sensirion_i2c.*

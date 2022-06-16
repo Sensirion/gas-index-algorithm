@@ -17,7 +17,7 @@ from sensirion_gas_index_algorithm.voc_algorithm import VocAlgorithm
 # Sampling interval in seconds
 # This code uses a fixed heating pulse of ca. 200 ms for the measurement and thus,
 # the sampling interval defines the duty cycle
-sampling_interval = 1
+sampling_interval = 1.0
 
 voc_algorithm = VocAlgorithm(sampling_interval)
 

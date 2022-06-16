@@ -12,8 +12,10 @@ log = logging.getLogger(__name__)
 
 class GasIndexAlgorithm(object):
 
-    def __init__(self, algorithm_type: int,
-                 sampling_interval: int = sensirion_gas_index_algorithm_wrap.default_sampling_interval):
+    def __init__(self,
+                 algorithm_type: int,
+                 sampling_interval: int =
+                 sensirion_gas_index_algorithm_wrap.GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL):
         self._algorithm_type = algorithm_type
         self._algorithm = sensirion_gas_index_algorithm_wrap.GasIndexAlgorithmParams(algorithm_type, sampling_interval)
 
@@ -21,7 +23,9 @@ class GasIndexAlgorithm(object):
         """Get the version of the engine."""
         return self._algorithm.get_version()
 
-    def init(self, sampling_interval: int = sensirion_gas_index_algorithm_wrap.default_sampling_interval):
+    def init(self,
+             sampling_interval: int =
+             sensirion_gas_index_algorithm_wrap.GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL):
         """Re-initialize / reset the engine."""
         self._algorithm.init(self._algorithm_type, sampling_interval)
 

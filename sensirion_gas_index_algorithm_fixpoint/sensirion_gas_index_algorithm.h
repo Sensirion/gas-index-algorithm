@@ -34,6 +34,15 @@
 
 #include <stdint.h>
 
+/* The fixed point arithmetic parts of this code were originally created by
+ * https://github.com/PetteriAimonen/libfixmath
+ */
+
+typedef int32_t fix16_t;
+
+#define F16(x) \
+    ((fix16_t)(((x) >= 0) ? ((x)*65536.0 + 0.5) : ((x)*65536.0 - 0.5)))
+
 #ifndef __cplusplus
 
 #if __STDC_VERSION__ >= 199901L
@@ -57,43 +66,43 @@
 
 #define GasIndexAlgorithm_ALGORITHM_TYPE_VOC (0)
 #define GasIndexAlgorithm_ALGORITHM_TYPE_NOX (1)
-#define GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL (1.f)
-#define GasIndexAlgorithm_INITIAL_BLACKOUT (45.f)
-#define GasIndexAlgorithm_INDEX_GAIN (230.f)
-#define GasIndexAlgorithm_SRAW_STD_INITIAL (50.f)
-#define GasIndexAlgorithm_SRAW_STD_BONUS_VOC (220.f)
-#define GasIndexAlgorithm_SRAW_STD_NOX (2000.f)
-#define GasIndexAlgorithm_TAU_MEAN_HOURS (12.f)
-#define GasIndexAlgorithm_TAU_VARIANCE_HOURS (12.f)
-#define GasIndexAlgorithm_TAU_INITIAL_MEAN_VOC (20.f)
-#define GasIndexAlgorithm_TAU_INITIAL_MEAN_NOX (1200.f)
-#define GasIndexAlgorithm_INIT_DURATION_MEAN_VOC ((3600.f * 0.75f))
-#define GasIndexAlgorithm_INIT_DURATION_MEAN_NOX ((3600.f * 4.75f))
-#define GasIndexAlgorithm_INIT_TRANSITION_MEAN (0.01f)
-#define GasIndexAlgorithm_TAU_INITIAL_VARIANCE (2500.f)
-#define GasIndexAlgorithm_INIT_DURATION_VARIANCE_VOC ((3600.f * 1.45f))
-#define GasIndexAlgorithm_INIT_DURATION_VARIANCE_NOX ((3600.f * 5.70f))
-#define GasIndexAlgorithm_INIT_TRANSITION_VARIANCE (0.01f)
-#define GasIndexAlgorithm_GATING_THRESHOLD_VOC (340.f)
-#define GasIndexAlgorithm_GATING_THRESHOLD_NOX (30.f)
-#define GasIndexAlgorithm_GATING_THRESHOLD_INITIAL (510.f)
-#define GasIndexAlgorithm_GATING_THRESHOLD_TRANSITION (0.09f)
-#define GasIndexAlgorithm_GATING_VOC_MAX_DURATION_MINUTES ((60.f * 3.f))
-#define GasIndexAlgorithm_GATING_NOX_MAX_DURATION_MINUTES ((60.f * 12.f))
-#define GasIndexAlgorithm_GATING_MAX_RATIO (0.3f)
-#define GasIndexAlgorithm_SIGMOID_L (500.f)
-#define GasIndexAlgorithm_SIGMOID_K_VOC (-0.0065f)
-#define GasIndexAlgorithm_SIGMOID_X0_VOC (213.f)
-#define GasIndexAlgorithm_SIGMOID_K_NOX (-0.0101f)
-#define GasIndexAlgorithm_SIGMOID_X0_NOX (614.f)
-#define GasIndexAlgorithm_VOC_INDEX_OFFSET_DEFAULT (100.f)
-#define GasIndexAlgorithm_NOX_INDEX_OFFSET_DEFAULT (1.f)
-#define GasIndexAlgorithm_LP_TAU_FAST (20.0f)
-#define GasIndexAlgorithm_LP_TAU_SLOW (500.0f)
-#define GasIndexAlgorithm_LP_ALPHA (-0.2f)
+#define GasIndexAlgorithm_SAMPLING_INTERVAL (1.)
+#define GasIndexAlgorithm_INITIAL_BLACKOUT (45.)
+#define GasIndexAlgorithm_INDEX_GAIN (230.)
+#define GasIndexAlgorithm_SRAW_STD_INITIAL (50.)
+#define GasIndexAlgorithm_SRAW_STD_BONUS_VOC (220.)
+#define GasIndexAlgorithm_SRAW_STD_NOX (2000.)
+#define GasIndexAlgorithm_TAU_MEAN_HOURS (12.)
+#define GasIndexAlgorithm_TAU_VARIANCE_HOURS (12.)
+#define GasIndexAlgorithm_TAU_INITIAL_MEAN_VOC (20.)
+#define GasIndexAlgorithm_TAU_INITIAL_MEAN_NOX (1200.)
+#define GasIndexAlgorithm_INIT_DURATION_MEAN_VOC ((3600. * 0.75))
+#define GasIndexAlgorithm_INIT_DURATION_MEAN_NOX ((3600. * 4.75))
+#define GasIndexAlgorithm_INIT_TRANSITION_MEAN (0.01)
+#define GasIndexAlgorithm_TAU_INITIAL_VARIANCE (2500.)
+#define GasIndexAlgorithm_INIT_DURATION_VARIANCE_VOC ((3600. * 1.45))
+#define GasIndexAlgorithm_INIT_DURATION_VARIANCE_NOX ((3600. * 5.70))
+#define GasIndexAlgorithm_INIT_TRANSITION_VARIANCE (0.01)
+#define GasIndexAlgorithm_GATING_THRESHOLD_VOC (340.)
+#define GasIndexAlgorithm_GATING_THRESHOLD_NOX (30.)
+#define GasIndexAlgorithm_GATING_THRESHOLD_INITIAL (510.)
+#define GasIndexAlgorithm_GATING_THRESHOLD_TRANSITION (0.09)
+#define GasIndexAlgorithm_GATING_VOC_MAX_DURATION_MINUTES ((60. * 3.))
+#define GasIndexAlgorithm_GATING_NOX_MAX_DURATION_MINUTES ((60. * 12.))
+#define GasIndexAlgorithm_GATING_MAX_RATIO (0.3)
+#define GasIndexAlgorithm_SIGMOID_L (500.)
+#define GasIndexAlgorithm_SIGMOID_K_VOC (-0.0065)
+#define GasIndexAlgorithm_SIGMOID_X0_VOC (213.)
+#define GasIndexAlgorithm_SIGMOID_K_NOX (-0.0101)
+#define GasIndexAlgorithm_SIGMOID_X0_NOX (614.)
+#define GasIndexAlgorithm_VOC_INDEX_OFFSET_DEFAULT (100.)
+#define GasIndexAlgorithm_NOX_INDEX_OFFSET_DEFAULT (1.)
+#define GasIndexAlgorithm_LP_TAU_FAST (20.0)
+#define GasIndexAlgorithm_LP_TAU_SLOW (500.0)
+#define GasIndexAlgorithm_LP_ALPHA (-0.2)
 #define GasIndexAlgorithm_VOC_SRAW_MINIMUM (20000)
 #define GasIndexAlgorithm_NOX_SRAW_MINIMUM (10000)
-#define GasIndexAlgorithm_PERSISTENCE_UPTIME_GAMMA ((3.f * 3600.f))
+#define GasIndexAlgorithm_PERSISTENCE_UPTIME_GAMMA ((3. * 3600.))
 #define GasIndexAlgorithm_TUNING_INDEX_OFFSET_MIN (1)
 #define GasIndexAlgorithm_TUNING_INDEX_OFFSET_MAX (250)
 #define GasIndexAlgorithm_TUNING_LEARNING_TIME_OFFSET_HOURS_MIN (1)
@@ -106,67 +115,57 @@
 #define GasIndexAlgorithm_TUNING_STD_INITIAL_MAX (5000)
 #define GasIndexAlgorithm_TUNING_GAIN_FACTOR_MIN (1)
 #define GasIndexAlgorithm_TUNING_GAIN_FACTOR_MAX (1000)
-#define GasIndexAlgorithm_MEAN_VARIANCE_ESTIMATOR__GAMMA_SCALING (64.f)
+#define GasIndexAlgorithm_MEAN_VARIANCE_ESTIMATOR__GAMMA_SCALING (64.)
 #define GasIndexAlgorithm_MEAN_VARIANCE_ESTIMATOR__ADDITIONAL_GAMMA_MEAN_SCALING \
-    (8.f)
-#define GasIndexAlgorithm_MEAN_VARIANCE_ESTIMATOR__FIX16_MAX (32767.f)
+    (8.)
+#define GasIndexAlgorithm_MEAN_VARIANCE_ESTIMATOR__FIX16_MAX (32767.)
 
 /**
  * Struct to hold all parameters and states of the gas algorithm.
  */
 typedef struct {
-    int mAlgorithm_Type;
-    float mSamplingInterval;
-    float mIndex_Offset;
-    int mSraw_Minimum;
-    float mGating_Max_Duration_Minutes;
-    float mInit_Duration_Mean;
-    float mInit_Duration_Variance;
-    float mGating_Threshold;
-    float mIndex_Gain;
-    float mTau_Mean_Hours;
-    float mTau_Variance_Hours;
-    float mSraw_Std_Initial;
-    float mUptime;
-    float mSraw;
-    float mGas_Index;
+    int32_t mAlgorithm_Type;
+    fix16_t mIndex_Offset;
+    int32_t mSraw_Minimum;
+    fix16_t mGating_Max_Duration_Minutes;
+    fix16_t mInit_Duration_Mean;
+    fix16_t mInit_Duration_Variance;
+    fix16_t mGating_Threshold;
+    fix16_t mIndex_Gain;
+    fix16_t mTau_Mean_Hours;
+    fix16_t mTau_Variance_Hours;
+    fix16_t mSraw_Std_Initial;
+    fix16_t mUptime;
+    fix16_t mSraw;
+    fix16_t mGas_Index;
     bool m_Mean_Variance_Estimator___Initialized;
-    float m_Mean_Variance_Estimator___Mean;
-    float m_Mean_Variance_Estimator___Sraw_Offset;
-    float m_Mean_Variance_Estimator___Std;
-    float m_Mean_Variance_Estimator___Gamma_Mean;
-    float m_Mean_Variance_Estimator___Gamma_Variance;
-    float m_Mean_Variance_Estimator___Gamma_Initial_Mean;
-    float m_Mean_Variance_Estimator___Gamma_Initial_Variance;
-    float m_Mean_Variance_Estimator__Gamma_Mean;
-    float m_Mean_Variance_Estimator__Gamma_Variance;
-    float m_Mean_Variance_Estimator___Uptime_Gamma;
-    float m_Mean_Variance_Estimator___Uptime_Gating;
-    float m_Mean_Variance_Estimator___Gating_Duration_Minutes;
-    float m_Mean_Variance_Estimator___Sigmoid__K;
-    float m_Mean_Variance_Estimator___Sigmoid__X0;
-    float m_Mox_Model__Sraw_Std;
-    float m_Mox_Model__Sraw_Mean;
-    float m_Sigmoid_Scaled__K;
-    float m_Sigmoid_Scaled__X0;
-    float m_Sigmoid_Scaled__Offset_Default;
-    float m_Adaptive_Lowpass__A1;
-    float m_Adaptive_Lowpass__A2;
+    fix16_t m_Mean_Variance_Estimator___Mean;
+    fix16_t m_Mean_Variance_Estimator___Sraw_Offset;
+    fix16_t m_Mean_Variance_Estimator___Std;
+    fix16_t m_Mean_Variance_Estimator___Gamma_Mean;
+    fix16_t m_Mean_Variance_Estimator___Gamma_Variance;
+    fix16_t m_Mean_Variance_Estimator___Gamma_Initial_Mean;
+    fix16_t m_Mean_Variance_Estimator___Gamma_Initial_Variance;
+    fix16_t m_Mean_Variance_Estimator__Gamma_Mean;
+    fix16_t m_Mean_Variance_Estimator__Gamma_Variance;
+    fix16_t m_Mean_Variance_Estimator___Uptime_Gamma;
+    fix16_t m_Mean_Variance_Estimator___Uptime_Gating;
+    fix16_t m_Mean_Variance_Estimator___Gating_Duration_Minutes;
+    fix16_t m_Mean_Variance_Estimator___Sigmoid__K;
+    fix16_t m_Mean_Variance_Estimator___Sigmoid__X0;
+    fix16_t m_Mox_Model__Sraw_Std;
+    fix16_t m_Mox_Model__Sraw_Mean;
+    fix16_t m_Sigmoid_Scaled__K;
+    fix16_t m_Sigmoid_Scaled__X0;
+    fix16_t m_Sigmoid_Scaled__Offset_Default;
+    fix16_t m_Adaptive_Lowpass__A1;
+    fix16_t m_Adaptive_Lowpass__A2;
     bool m_Adaptive_Lowpass___Initialized;
-    float m_Adaptive_Lowpass___X1;
-    float m_Adaptive_Lowpass___X2;
-    float m_Adaptive_Lowpass___X3;
+    fix16_t m_Adaptive_Lowpass___X1;
+    fix16_t m_Adaptive_Lowpass___X2;
+    fix16_t m_Adaptive_Lowpass___X3;
 } GasIndexAlgorithmParams;
 
-/**
- * Initialize the gas index algorithm parameters for the specified algorithm
- * type and reset its internal states. Call this once at the beginning.
- * @param params            Pointer to the GasIndexAlgorithmParams struct
- * @param algorithm_type    0 (GasIndexAlgorithm_ALGORITHM_TYPE_VOC) for VOC or
- *                          1 (GasIndexAlgorithm_ALGORITHM_TYPE_NOX) for NOx
- */
-void GasIndexAlgorithm_init(GasIndexAlgorithmParams* params,
-                            int32_t algorithm_type);
 
 /**
  * Initialize the gas index algorithm parameters for the specified algorithm
@@ -174,12 +173,8 @@ void GasIndexAlgorithm_init(GasIndexAlgorithmParams* params,
  * @param params            Pointer to the GasIndexAlgorithmParams struct
  * @param algorithm_type    0 (GasIndexAlgorithm_ALGORITHM_TYPE_VOC) for VOC or
  *                          1 (GasIndexAlgorithm_ALGORITHM_TYPE_NOX) for NOx
- * @param sampling_interval The sampling interval in seconds the algorithm is
- *                          called. Tested for 1s and 10s.
  */
-void GasIndexAlgorithm_init_with_sampling_interval(
-    GasIndexAlgorithmParams* params, int32_t algorithm_type,
-    float sampling_interval);
+void GasIndexAlgorithm_init(GasIndexAlgorithmParams *params, int32_t algorithm_type);
 
 /**
  * Reset the internal states of the gas index algorithm. Previously set tuning
@@ -200,7 +195,7 @@ void GasIndexAlgorithm_reset(GasIndexAlgorithmParams* params);
  * @param state1    State1 to be stored
  */
 void GasIndexAlgorithm_get_states(const GasIndexAlgorithmParams* params,
-                                  float* state0, float* state1);
+                                  int32_t* state0, int32_t* state1);
 
 /**
  * Set previously retrieved algorithm states to resume operation after a short
@@ -214,8 +209,8 @@ void GasIndexAlgorithm_get_states(const GasIndexAlgorithmParams* params,
  * @param state0    State0 to be restored
  * @param state1    State1 to be restored
  */
-void GasIndexAlgorithm_set_states(GasIndexAlgorithmParams* params, float state0,
-                                  float state1);
+void GasIndexAlgorithm_set_states(GasIndexAlgorithmParams* params,
+                                  int32_t state0, int32_t state1);
 
 /**
  * Set parameters to customize the gas index algorithm. Call this once after
@@ -269,12 +264,6 @@ void GasIndexAlgorithm_get_tuning_parameters(
     int32_t* learning_time_offset_hours, int32_t* learning_time_gain_hours,
     int32_t* gating_max_duration_minutes, int32_t* std_initial,
     int32_t* gain_factor);
-
-/**
- * Get the sampling interval parameter used by the algorithm.
- */
-void GasIndexAlgorithm_get_sampling_interval(
-    const GasIndexAlgorithmParams* params, float* sampling_interval);
 
 /**
  * Calculate the gas index value from the raw sensor value.
