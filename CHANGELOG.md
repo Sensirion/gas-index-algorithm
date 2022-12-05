@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.2.01 - 2022-06-16
+## [3.2.2] - 2022-12-05
+
+Fix type issue on non 32-bit platforms. If `mSraw_Minimum` parameter is
+defined as int instead of explicitly as `int32_t` it can lead to an
+overflow issue causing the algorithm to the maximal index.
+
+## [3.2.1] - 2022-06-16
 
 Add floating point version of algorithm and use it in python and
 raspberry pi.
@@ -21,7 +27,8 @@ Add low power examples and allow changing sampling interval on startup
 
 Sensirion VOC/NOx Engine algorithm, algorithm version 3.1.
 
-[Unreleased]: https://github.com/Sensirion/gas-index-algorithm/compare/3.2.1..master
+[Unreleased]: https://github.com/Sensirion/gas-index-algorithm/compare/3.2.2..master
+[3.2.2]: https://github.com/Sensirion/gas-index-algorithm/compare/3.2.1..3.2.2
 [3.2.1]: https://github.com/Sensirion/gas-index-algorithm/compare/3.2.0..3.2.1
 [3.2.0]: https://github.com/Sensirion/gas-index-algorithm/compare/3.1.0..3.2.0
 [3.1.0]: https://github.com/Sensirion/gas-index-algorithm/releases/tag/3.1.0

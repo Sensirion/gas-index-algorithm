@@ -118,7 +118,7 @@ typedef struct {
     int mAlgorithm_Type;
     float mSamplingInterval;
     float mIndex_Offset;
-    int mSraw_Minimum;
+    int32_t mSraw_Minimum;
     float mGating_Max_Duration_Minutes;
     float mInit_Duration_Mean;
     float mInit_Duration_Variance;
