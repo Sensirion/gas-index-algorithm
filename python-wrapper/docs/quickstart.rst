@@ -10,7 +10,7 @@ The driver for the SensorBridge and the base SHDLC driver used in the example ca
 
 .. sourcecode:: bash
 
-    pip install pip install sensirion-shdlc-sensorbridge sensirion-i2c-sht sensirion-i2c-sgp4x
+    pip install sensirion-shdlc-sensorbridge sensirion-i2c-sht sensirion-i2c-sgp4x
 
 .. _Sensirion SEK-SensorBridge: https://www.sensirion.com/sensorbridge/
 
@@ -27,7 +27,7 @@ The dependencies can be installed as follows:
 
 .. sourcecode:: bash
 
-    pip install pip install sensirion-i2c-driver sensirion-i2c-sht sensirion-i2c-sgp4x
+    pip install sensirion-i2c-driver sensirion-i2c-sht sensirion-i2c-sgp4x
 
 
 .. literalinclude:: ../example_linux.py
