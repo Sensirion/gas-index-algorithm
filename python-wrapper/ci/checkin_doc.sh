@@ -7,10 +7,10 @@ set -euv -o pipefail
 git clone "git@gitlab:${CI_PROJECT_PATH}.git" html
 cd html
 git checkout gh-pages
-rm empty.txt
+rm -f empty.txt
 cd ..
 mv docs/_build/html/* html/
 cd html
 git add .
-git commit -m"Automatic doc update:${CI_COMMIT_SHORT_SHA}"
+git commit -m"Automatic doc update: ${CI_COMMIT_SHORT_SHA}"
 git push
