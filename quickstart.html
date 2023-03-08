@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start &mdash; sensirion-gas-index-algorithm 3.2.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Welcome to Sensirion Gas Index Algorithm’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> sensirion-gas-index-algorithm
+          </a>
+              <div class="version">
+                3.2.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sensorbridge-example">SensorBridge Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-i2c-hardware">Linux I²C Hardware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sensirion-gas-index-algorithm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<section id="sensorbridge-example">
+<h2>SensorBridge Example<a class="headerlink" href="#sensorbridge-example" title="Permalink to this headline"></a></h2>
+<p>Following example code shows how to use this driver with a Sensirion SGP41 and an
+SHTC3 humidity and temperature sensor connected to the computer using a <a class="reference external" href="https://www.sensirion.com/sensorbridge/">Sensirion SEK-SensorBridge</a>.
+The driver for the SensorBridge and the base SHDLC driver used in the example can be installed with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sensirion-shdlc-sensorbridge<span class="w"> </span>sensirion-i2c-sht<span class="w"> </span>sensirion-i2c-sgp4x
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This example uses an SGP41 and SHTC3 connected to a Sensirion SEK-SensorBridge</span>
+
+<span class="sd">Install the dependencies</span>
+<span class="sd">pip install sensirion-shdlc-sensorbridge sensirion-i2c-sht sensirion-i2c-sgp4x</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sensirion_shdlc_driver</span> <span class="kn">import</span> <span class="n">ShdlcSerialPort</span><span class="p">,</span> <span class="n">ShdlcConnection</span>
+<span class="kn">from</span> <span class="nn">sensirion_shdlc_sensorbridge</span> <span class="kn">import</span> <span class="n">SensorBridgePort</span><span class="p">,</span> \
+    <span class="n">SensorBridgeShdlcDevice</span><span class="p">,</span> <span class="n">SensorBridgeI2cProxy</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_driver</span> <span class="kn">import</span> <span class="n">I2cConnection</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_sgp4x</span> <span class="kn">import</span> <span class="n">Sgp41I2cDevice</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_sht.shtc3</span> <span class="kn">import</span> <span class="n">Shtc3I2cDevice</span>
+<span class="kn">from</span> <span class="nn">sensirion_gas_index_algorithm.voc_algorithm</span> <span class="kn">import</span> <span class="n">VocAlgorithm</span>
+<span class="kn">from</span> <span class="nn">sensirion_gas_index_algorithm.nox_algorithm</span> <span class="kn">import</span> <span class="n">NoxAlgorithm</span>
+
+<span class="n">voc_algorithm</span> <span class="o">=</span> <span class="n">VocAlgorithm</span><span class="p">()</span>
+<span class="n">nox_algorithm</span> <span class="o">=</span> <span class="n">NoxAlgorithm</span><span class="p">()</span>
+
+<span class="c1"># Connect to the SensorBridge with default settings:</span>
+<span class="c1">#  - baudrate:      460800</span>
+<span class="c1">#  - slave address: 0</span>
+<span class="k">with</span> <span class="n">ShdlcSerialPort</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="s1">&#39;COM1&#39;</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">460800</span><span class="p">)</span> <span class="k">as</span> <span class="n">port</span><span class="p">:</span>
+    <span class="n">bridge</span> <span class="o">=</span> <span class="n">SensorBridgeShdlcDevice</span><span class="p">(</span><span class="n">ShdlcConnection</span><span class="p">(</span><span class="n">port</span><span class="p">),</span> <span class="n">slave_address</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SensorBridge SN: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bridge</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
+
+    <span class="c1"># Configure SensorBridge port 1 for SGP40</span>
+    <span class="n">bridge</span><span class="o">.</span><span class="n">set_i2c_frequency</span><span class="p">(</span><span class="n">SensorBridgePort</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mf">100e3</span><span class="p">)</span>
+    <span class="n">bridge</span><span class="o">.</span><span class="n">set_supply_voltage</span><span class="p">(</span><span class="n">SensorBridgePort</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span> <span class="n">voltage</span><span class="o">=</span><span class="mf">3.3</span><span class="p">)</span>
+    <span class="n">bridge</span><span class="o">.</span><span class="n">switch_supply_on</span><span class="p">(</span><span class="n">SensorBridgePort</span><span class="o">.</span><span class="n">ONE</span><span class="p">)</span>
+
+    <span class="c1"># Create SGP40 device</span>
+    <span class="n">i2c_transceiver</span> <span class="o">=</span> <span class="n">SensorBridgeI2cProxy</span><span class="p">(</span><span class="n">bridge</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">SensorBridgePort</span><span class="o">.</span><span class="n">ONE</span><span class="p">)</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">I2cConnection</span><span class="p">(</span><span class="n">i2c_transceiver</span><span class="p">)</span>
+
+    <span class="n">sgp41</span> <span class="o">=</span> <span class="n">Sgp41I2cDevice</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SGP41 Serial Number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sgp41</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
+
+    <span class="n">shtc3</span> <span class="o">=</span> <span class="n">Shtc3I2cDevice</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SHTC3 Product ID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shtc3</span><span class="o">.</span><span class="n">read_product_id</span><span class="p">()))</span>
+    <span class="n">shtc3</span><span class="o">.</span><span class="n">enter_sleep</span><span class="p">()</span>
+
+    <span class="c1"># Run  conditioning for 10 seconds</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span> <span class="o">=</span> <span class="n">shtc3</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
+        <span class="n">sraw_voc</span> <span class="o">=</span> <span class="n">sgp41</span><span class="o">.</span><span class="n">conditioning</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">degrees_celsius</span><span class="p">,</span>
+                                      <span class="n">relative_humidity</span><span class="o">=</span><span class="n">humidity</span><span class="o">.</span><span class="n">percent_rh</span><span class="p">)</span>
+        <span class="c1"># use default formatting for printing output:</span>
+        <span class="n">voc_index</span> <span class="o">=</span> <span class="n">voc_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_voc</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VOC Index: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s2">NOx Index: conditioning&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voc_index</span><span class="p">))</span>
+
+    <span class="c1"># Measure every second for 2 minutes</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">120</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span> <span class="o">=</span> <span class="n">shtc3</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
+        <span class="n">sraw_voc</span><span class="p">,</span> <span class="n">sraw_nox</span> <span class="o">=</span> <span class="n">sgp41</span><span class="o">.</span><span class="n">measure_raw</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">degrees_celsius</span><span class="p">,</span>
+                                               <span class="n">relative_humidity</span><span class="o">=</span><span class="n">humidity</span><span class="o">.</span><span class="n">percent_rh</span><span class="p">)</span>
+        <span class="c1"># use default formatting for printing output:</span>
+        <span class="n">voc_index</span> <span class="o">=</span> <span class="n">voc_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_voc</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="n">nox_index</span> <span class="o">=</span> <span class="n">nox_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_nox</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VOC Index: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s2">NOx Index: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voc_index</span><span class="p">,</span> <span class="n">nox_index</span><span class="p">))</span>
+
+    <span class="n">bridge</span><span class="o">.</span><span class="n">switch_supply_off</span><span class="p">(</span><span class="n">SensorBridgePort</span><span class="o">.</span><span class="n">ONE</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="linux-i2c-hardware">
+<h2>Linux I²C Hardware<a class="headerlink" href="#linux-i2c-hardware" title="Permalink to this headline"></a></h2>
+<p>The following examples show how to use the SGP41 and SHTC3 sensors with a generic Linux I²C hardware
+(e.g. attached to the Raspberry Pi I²C port 1).
+The dependencies can be installed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sensirion-i2c-driver<span class="w"> </span>sensirion-i2c-sht<span class="w"> </span>sensirion-i2c-sgp4x
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_driver</span> <span class="kn">import</span> <span class="n">LinuxI2cTransceiver</span><span class="p">,</span> <span class="n">I2cConnection</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_sgp4x</span> <span class="kn">import</span> <span class="n">Sgp41I2cDevice</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_sht.shtc3</span> <span class="kn">import</span> <span class="n">Shtc3I2cDevice</span>
+<span class="kn">from</span> <span class="nn">sensirion_gas_index_algorithm.voc_algorithm</span> <span class="kn">import</span> <span class="n">VocAlgorithm</span>
+<span class="kn">from</span> <span class="nn">sensirion_gas_index_algorithm.nox_algorithm</span> <span class="kn">import</span> <span class="n">NoxAlgorithm</span>
+
+<span class="n">voc_algorithm</span> <span class="o">=</span> <span class="n">VocAlgorithm</span><span class="p">()</span>
+<span class="n">nox_algorithm</span> <span class="o">=</span> <span class="n">NoxAlgorithm</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">I2cConnection</span><span class="p">(</span><span class="n">LinuxI2cTransceiver</span><span class="p">(</span><span class="s1">&#39;/dev/i2c-1&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">i2c_connection</span><span class="p">:</span>
+    <span class="n">sgp41</span> <span class="o">=</span> <span class="n">Sgp41I2cDevice</span><span class="p">(</span><span class="n">i2c_connection</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SGP41 Serial Number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sgp41</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
+
+    <span class="n">shtc3</span> <span class="o">=</span> <span class="n">Shtc3I2cDevice</span><span class="p">(</span><span class="n">i2c_connection</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SHTC3 Product ID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shtc3</span><span class="o">.</span><span class="n">read_product_id</span><span class="p">()))</span>
+    <span class="n">shtc3</span><span class="o">.</span><span class="n">enter_sleep</span><span class="p">()</span>
+
+    <span class="c1"># Run  conditioning for 10 seconds</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span> <span class="o">=</span> <span class="n">shtc3</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
+        <span class="n">sraw_voc</span> <span class="o">=</span> <span class="n">sgp41</span><span class="o">.</span><span class="n">conditioning</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">degrees_celsius</span><span class="p">,</span>
+                                      <span class="n">relative_humidity</span><span class="o">=</span><span class="n">humidity</span><span class="o">.</span><span class="n">percent_rh</span><span class="p">)</span>
+        <span class="c1"># use default formatting for printing output:</span>
+        <span class="n">voc_index</span> <span class="o">=</span> <span class="n">voc_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_voc</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VOC Index: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s2">NOx Index: conditioning&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voc_index</span><span class="p">))</span>
+
+    <span class="c1"># Measure every second for 2 minutes</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">120</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span> <span class="o">=</span> <span class="n">shtc3</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
+        <span class="n">sraw_voc</span><span class="p">,</span> <span class="n">sraw_nox</span> <span class="o">=</span> <span class="n">sgp41</span><span class="o">.</span><span class="n">measure_raw</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="o">.</span><span class="n">degrees_celsius</span><span class="p">,</span>
+                                               <span class="n">relative_humidity</span><span class="o">=</span><span class="n">humidity</span><span class="o">.</span><span class="n">percent_rh</span><span class="p">)</span>
+        <span class="c1"># use default formatting for printing output:</span>
+        <span class="n">voc_index</span> <span class="o">=</span> <span class="n">voc_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_voc</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="n">nox_index</span> <span class="o">=</span> <span class="n">nox_algorithm</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sraw_nox</span><span class="o">.</span><span class="n">ticks</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VOC Index: </span><span class="si">{}</span><span class="se">\t\t</span><span class="s2">NOx Index: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voc_index</span><span class="p">,</span> <span class="n">nox_index</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Sensirion Gas Index Algorithm’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 Sensirion AG, Switzerland.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
