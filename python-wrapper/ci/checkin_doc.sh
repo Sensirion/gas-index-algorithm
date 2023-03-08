@@ -8,6 +8,9 @@ git clone "git@gitlab:${CI_PROJECT_PATH}.git" html
 cd html
 git checkout gh-pages
 rm -f empty.txt
+rm -f *.html
+rm -f *.js
+rm -rf _*
 cd ..
 mv docs/_build/html/* html/
 cd html
