@@ -58,19 +58,14 @@ master_doc = 'index'
 #
 html_theme = 'sphinx_rtd_theme'
 
-# Workaround for weirdly formatted function parameters. See https://github.com/readthedocs/sphinx_rtd_theme/issues/766
-html4_writer = True
-
 html_favicon = 'favicon.ico'
 
 # -- Extension configuration -------------------------------------------------
-
-autodoc_member_order = 'bysource'
-
 autodoc_default_options = {
     'members': True,
+    'member-order': 'bysource',
+    'special-members': '__init__',
     'undoc-members': True,
-    'special-members': '__init__',  # To see __init__()
     'inherited-members': True,  # To see the methods from base classes
 }
 
@@ -85,11 +80,11 @@ def setup(app):
     app.connect('autodoc-skip-member', autodoc_skip_member)
 
 
+scv_whitelist_branches = ('master',)
+
+scv_grm_exclude = ('.gitignore', '.nojekyll')
+
 # Workaround for "=None" documentation of instance attributes
 # (see https://github.com/sphinx-doc/sphinx/issues/2044)
 sphinx.ext.autodoc.InstanceAttributeDocumenter.add_directive_header = \
     sphinx.ext.autodoc.ClassLevelDocumenter.add_directive_header
-
-scv_whitelist_branches = ('master',)
-
-scv_grm_exclude = ('.gitignore', '.nojekyll')

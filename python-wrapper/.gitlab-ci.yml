@@ -11,7 +11,7 @@ generate_swig_wrappers:
   tags:
     - linux
     - docker
-  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.7.0
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.11.0
   script:
     - ./generate_swig_wrapper.sh
   artifacts:
@@ -66,16 +66,20 @@ py3p8_osx_build:
       - python-wrapper/dist/
 
 build_docs:
-  extends: .build_docs_v2
+  stage: build
+  tags: [ linux, docker ]
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.11.0
+  variables:
+    SPHINXOPTS: "-W --keep-going"
   script:
-    - apt-get update && apt-get install -y graphviz
-    - pip install -e.[docs]
-    - ./ci/set_git_config.sh
-    - cd docs && make html
-  after_script: [] # overwrite after_script from template
+    - python setup.py install
+    - pip install -r docs/requirements.txt
+    - cd docs
+    - make html
+  after_script:
+    - mv docs/_build/html/ public/  # everything in public/ will get published
   artifacts:
-    paths:
-      - python-wrapper/docs/_build
+    paths: [public]
     expire_in: 1 week
     when: always
 
@@ -100,3 +104,20 @@ deploy_stable:
     - TAG_VERSION=$(git describe --tags)
     - if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then echo "Tag Version ($TAG_VERSION) != Package Version ($PKG_VERSION)" && exit 1; fi
     - twine upload dist/*
+
+deploy_docs:
+  stage: deploy
+  tags: [linux, docker]
+  image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.11.0
+  dependencies: []
+  only: [master, tags]
+  script:
+    - python setup.py install
+    - pip install -r docs/requirements.txt
+    - cd docs
+    - make html
+  after_script:
+    - chmod 777 ./ci/set_git_config.sh
+    - ./ci/set_git_config.sh
+    - chmod 777 ./ci/checkin_doc.sh
+    - ./ci/checkin_doc.sh
