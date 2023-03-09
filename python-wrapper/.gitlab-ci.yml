@@ -77,7 +77,7 @@ build_docs:
     - cd docs
     - make html
   after_script:
-    - mv docs/_build/html/ public/  # everything in public/ will get published
+    - mv python-wrapper/docs/_build/html/ public/  # everything in public/ will get published
   artifacts:
     paths: [public]
     expire_in: 1 week
@@ -109,18 +109,11 @@ deploy_docs:
   stage: deploy
   tags: [linux, docker]
   image: registry.gitlab.sensirion.lokal/sensirion/docker/docker-python:3.8-20.04-2.11.0
-  dependencies: [generate_swig_wrappers]
+  dependencies: [build_docs]
   only: [master, tags]
-  variables:
-    SPHINXOPTS: "-W --keep-going"
   script:
-    - python setup.py install
-    - pip install -r docs/requirements.txt
-    - cd docs
-    - make html
-  after_script:
-    - cd python-wrapper
-    - chmod 777 ./ci/set_git_config.sh
-    - ./ci/set_git_config.sh
-    - chmod 777 ./ci/checkin_doc.sh
-    - ./ci/checkin_doc.sh
+    - cd ..
+    - chmod 777 ./python-wrapper/ci/set_git_config.sh
+    - ./python-wrapper/ci/set_git_config.sh
+    - chmod 777 ./python-wrapper/ci/checkin_doc.sh
+    - ./python-wrapper/ci/checkin_doc.sh
