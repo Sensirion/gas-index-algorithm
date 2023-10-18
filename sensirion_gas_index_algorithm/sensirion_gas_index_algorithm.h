@@ -29,6 +29,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef GASINDEXALGORITHM_H_
 #define GASINDEXALGORITHM_H_
 
@@ -288,3 +292,7 @@ void GasIndexAlgorithm_process(GasIndexAlgorithmParams* params, int32_t sraw,
                                int32_t* gas_index);
 
 #endif /* GASINDEXALGORITHM_H_ */
+
+#ifdef __cplusplus
+}
+#endif
