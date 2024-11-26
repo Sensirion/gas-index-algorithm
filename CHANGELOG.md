@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
+Fix casting issue for tick calculation for RH/T compensation in Raspberry-Pi example
 
 ## [3.2.2] - 2022-12-05
 
