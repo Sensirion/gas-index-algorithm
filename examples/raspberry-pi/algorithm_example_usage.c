@@ -31,6 +31,7 @@
 
 #include "sensirion_gas_index_algorithm.h"
 #include <stdio.h>  // printf
+#include <math.h>
 
 #include "sensirion_common.h"
 #include "sensirion_i2c_hal.h"
@@ -66,8 +67,8 @@ void read_compensation_values(uint16_t* compensation_rh,
         // interface NOTE: in case you read RH and T raw signals check out the
         // ticks specification in the datasheet, as they can be different for
         // different sensors
-        *compensation_rh = (uint16_t)s_rh * 65535 / 100;
-        *compensation_t = (uint16_t)(s_temperature + 45) * 65535 / 175;
+        *compensation_rh = (uint16_t)lround(s_rh * 65535 / 100);
+        *compensation_t = (uint16_t)lround((s_temperature + 45) * 65535 / 175);
     }
 }
 
