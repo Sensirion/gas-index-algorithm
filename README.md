@@ -117,12 +117,6 @@ Continuous | 1 s | 6.3mW
 
 **Contributions are welcome!**
 
-We develop and test this algorithm using our company internal tools (version
-control, continuous integration, code review etc.) and automatically
-synchronize the master branch with GitHub. But this doesn't mean that we don't
-respond to issues or don't accept pull requests on GitHub. In fact, you're very
-welcome to open issues or create pull requests :)
-
 This Sensirion library uses
 [`clang-format`](https://releases.llvm.org/download.html) to standardize the
 formatting of all our `.c` and `.h` files. Make sure your contributions are

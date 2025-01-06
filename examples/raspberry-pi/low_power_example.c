@@ -30,8 +30,8 @@
  */
 
 #include "sensirion_gas_index_algorithm.h"
-#include <stdio.h>  // printf
 #include <math.h>
+#include <stdio.h>  // printf
 
 #include "sensirion_common.h"
 #include "sensirion_i2c_hal.h"
@@ -40,7 +40,6 @@
 
 uint16_t DEFAULT_COMPENSATION_RH = 0x8000;  // in ticks as defined by SGP40
 uint16_t DEFAULT_COMPENSATION_T = 0x6666;   // in ticks as defined by SGP40
-
 
 void read_compensation_values(uint16_t* compensation_rh,
                               uint16_t* compensation_t);
@@ -52,13 +51,14 @@ int main(void) {
     uint16_t sraw_voc = 0;
     int32_t voc_index_value = 0;
     // Sampling interval in seconds
-    // This code uses a fixed heating pulse of ca. 200 ms for the measurement and thus,
-    // the sampling interval defines the duty cycle
+    // This code uses a fixed heating pulse of ca. 200 ms for the measurement
+    // and thus, the sampling interval defines the duty cycle
     float sampling_interval = 1.f;
 
     // initialize gas index parameters
     GasIndexAlgorithmParams voc_params;
-    GasIndexAlgorithm_init_with_sampling_interval(&voc_params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC, sampling_interval);
+    GasIndexAlgorithm_init_with_sampling_interval(
+        &voc_params, GasIndexAlgorithm_ALGORITHM_TYPE_VOC, sampling_interval);
 
     // initialize i2c communication used for SHT4x and SGP40
     sensirion_i2c_hal_init();
@@ -66,8 +66,10 @@ int main(void) {
     for (int i = 0; i < 100; i += 1) {
 
         // 1. Sleep: Total loop time should match the chosen sampling interval
-        // Therefore we take into account the heater delay and the measurement delays.
-        sensirion_i2c_hal_sleep_usec(((uint32_t)(sampling_interval*1000)-240)*1000);
+        // Therefore we take into account the heater delay and the measurement
+        // delays.
+        sensirion_i2c_hal_sleep_usec(
+            ((uint32_t)(sampling_interval * 1000) - 240) * 1000);
 
         // 2. Measure SHT4x  RH and T signals and convert to SGP40 ticks
         read_compensation_values(&compensation_rh, &compensation_t);
@@ -75,7 +77,7 @@ int main(void) {
         // 3. Measure SGP40 signal with low power mode
         // 3.1 Request a first measurement to turn the heater on
         error = sgp40_measure_raw_signal(compensation_rh, compensation_t,
-                                          &sraw_voc);
+                                         &sraw_voc);
         if (error) {
             printf("Error executing sgp40_measure_raw_signals(): %i\n", error);
             continue;
@@ -86,7 +88,7 @@ int main(void) {
 
         // 3.3 Request the actual measurement
         error = sgp40_measure_raw_signal(compensation_rh, compensation_t,
-                                          &sraw_voc);
+                                         &sraw_voc);
 
         if (error) {
             printf("Error executing sgp40_measure_raw_signals(): %i\n", error);
@@ -105,7 +107,6 @@ int main(void) {
         // index values
         GasIndexAlgorithm_process(&voc_params, sraw_voc, &voc_index_value);
         printf("VOC Raw: %i\tVOC Index: %i\n", sraw_voc, voc_index_value);
-
     }
 
     return 0;
@@ -122,8 +123,8 @@ int main(void) {
 void read_compensation_values(uint16_t* compensation_rh,
                               uint16_t* compensation_t) {
     int16_t error = 0;
-    float s_rh = 0;  // %RH
-    float s_temperature = 0; // degC
+    float s_rh = 0;           // %RH
+    float s_temperature = 0;  // degC
     error = sht4x_measure_high_precision(&s_temperature, &s_rh);
     if (error) {
         printf("Error executing sht4x_measure_high_precision(): %i\n", error);
@@ -134,7 +135,7 @@ void read_compensation_values(uint16_t* compensation_rh,
         printf("T: %.2f\tRH: %.2f\n", s_temperature, s_rh);
 
         // convert temperature and humidity to ticks as defined by SGP40
-        // interface 
+        // interface
         // NOTE: in case you read RH and T raw signals check out the
         // ticks specification in the datasheet, as they can be different for
         // different sensors

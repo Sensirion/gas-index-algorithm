@@ -169,7 +169,6 @@ typedef struct {
     fix16_t m_Adaptive_Lowpass___X3;
 } GasIndexAlgorithmParams;
 
-
 /**
  * Initialize the gas index algorithm parameters for the specified algorithm
  * type and reset its internal states. Call this once at the beginning.
@@ -177,7 +176,8 @@ typedef struct {
  * @param algorithm_type    0 (GasIndexAlgorithm_ALGORITHM_TYPE_VOC) for VOC or
  *                          1 (GasIndexAlgorithm_ALGORITHM_TYPE_NOX) for NOx
  */
-void GasIndexAlgorithm_init(GasIndexAlgorithmParams *params, int32_t algorithm_type);
+void GasIndexAlgorithm_init(GasIndexAlgorithmParams* params,
+                            int32_t algorithm_type);
 
 /**
  * Reset the internal states of the gas index algorithm. Previously set tuning

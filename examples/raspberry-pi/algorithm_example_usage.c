@@ -30,8 +30,8 @@
  */
 
 #include "sensirion_gas_index_algorithm.h"
-#include <stdio.h>  // printf
 #include <math.h>
+#include <stdio.h>  // printf
 
 #include "sensirion_common.h"
 #include "sensirion_i2c_hal.h"
