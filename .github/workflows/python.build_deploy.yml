@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   push:
   pull_request:
     branches:
@@ -141,7 +142,7 @@ jobs:
         with:
           path: python-wrapper/docs/_build/html
   deploy_pages:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags')) || github.event_name == 'workflow_dispatch'
     runs-on: "ubuntu-22.04"
     needs: build_pages
     permissions:
