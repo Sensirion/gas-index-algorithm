@@ -53,8 +53,8 @@ const NOX_INDEX_OFFSET_DEFAULT: f32 = 1.0;
 const LP_TAU_FAST: f32 = 20.0;
 const LP_TAU_SLOW: f32 = 500.0;
 const LP_ALPHA: f32 = -0.2;
-const VOC_SRAW_MINIMUM: i32 = 20000;
-const NOX_SRAW_MINIMUM: i32 = 10000;
+const VOC_SRAW_MINIMUM: f32 = 20000.0;
+const NOX_SRAW_MINIMUM: f32 = 10000.0;
 const PERSISTENCE_UPTIME_GAMMA: f32 = 3.0 * 3600.0;
 const MEAN_VARIANCE_ESTIMATOR_GAMMA_SCALING: f32 = 64.0;
 const MEAN_VARIANCE_ESTIMATOR_ADDITIONAL_GAMMA_MEAN_SCALING: f32 = 8.0;
@@ -142,7 +142,7 @@ impl MoxModel {
                 (sraw - self.sraw_mean) / SRAW_STD_NOX * tuning_parameters.gain_factor
             }
             AlgorithmType::Voc => {
-                ((sraw - self.sraw_mean) / (-1.0 * (self.sraw_std + SRAW_STD_BONUS_VOC)))
+                ((sraw - self.sraw_mean) / (-(self.sraw_std + SRAW_STD_BONUS_VOC)))
                     * tuning_parameters.gain_factor
             }
         }
@@ -154,7 +154,7 @@ pub struct GasIndexAlgorithm {
     algorithm_type: AlgorithmType,
     sampling_interval: f32,
     tuning_parameters: TuningParameters,
-    sraw_minimum: i32,
+    sraw_minimum: f32,
     init_duration_mean: f32,
     init_duration_variance: f32,
     gating_threshold: f32,
@@ -249,18 +249,16 @@ impl GasIndexAlgorithm {
         self.tuning_parameters
     }
 
-    pub fn process(&mut self, mut sraw: i32, gas_index: &mut i32) {
+    /// Calculate the gas index value from the raw sensor value.
+    /// sraw - raw value from the SGP4x sensor
+    /// Returns Some(calculated gas index value), or None during initial blackout period.
+    pub fn process(&mut self, sraw: u16) -> Option<i32> {
         if self.uptime <= INITIAL_BLACKOUT {
             self.uptime += self.sampling_interval;
+            None
         } else {
-            if sraw > 0 && (sraw < 65_000) {
-                if sraw < (self.sraw_minimum + 1) {
-                    sraw = self.sraw_minimum + 1;
-                } else if sraw > (self.sraw_minimum + i16::MAX as i32) {
-                    sraw = self.sraw_minimum + i16::MAX as i32;
-                }
-                self.sraw = (sraw - self.sraw_minimum) as f32;
-            }
+            self.sraw = (sraw as f32 - self.sraw_minimum).clamp(1.0, i16::MAX as f32);
+
             if (self.algorithm_type == AlgorithmType::Voc)
                 || self.mean_variance_estimator.is_initialized()
             {
@@ -289,8 +287,8 @@ impl GasIndexAlgorithm {
                     self.mean_variance_estimator.mean(),
                 );
             }
+            Some((self.gas_index + 0.5) as i32)
         }
-        *gas_index = (self.gas_index + 0.5) as i32;
     }
 }
 
