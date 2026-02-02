@@ -8,8 +8,8 @@ jobs:
   code-analysis:
     runs-on: "ubuntu-22.04"
     steps:
-      - uses: actions/checkout@v4
-      - uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+      - uses: actions/checkout@v6
+      - uses: awalsh128/cache-apt-pkgs-action@v1.6.0
         with:
           packages: clang-format
           version: 1.0
@@ -19,13 +19,13 @@ jobs:
   raspberry-pi-example-sources:
     runs-on: "ubuntu-22.04"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: run-download
         run: |
           cd ./examples/raspberry-pi
           ls
           make download
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: raspi-source-dist
           path: ./examples/raspberry-pi/*
@@ -34,8 +34,8 @@ jobs:
     runs-on: "ubuntu-22.04"
     needs: raspberry-pi-example-sources
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         with:
           name: raspi-source-dist
           path: ./examples/raspberry-pi/build-test

@@ -12,21 +12,21 @@ jobs:
       run:
         working-directory: ./python-wrapper
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install dependencies
-        uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.0
         with: 
           packages: gcc g++ swig
           version: 1.0
       - name: generate wrapper
         run: ./generate_swig_wrapper.sh
         shell: bash
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: python-sources
           path: python-wrapper/sensirion_gas_index_algorithm/**
           if-no-files-found: error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: swig-sources
           path: python-wrapper/swig/**
@@ -37,8 +37,8 @@ jobs:
       run:
         working-directory: ./python-wrapper    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: 3.8
       - name: install rst linter
@@ -58,16 +58,16 @@ jobs:
       run:
         working-directory: ./python-wrapper
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         with:
           name: python-sources
           path: python-wrapper/sensirion_gas_index_algorithm
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: swig-sources
           path: python-wrapper/swig
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.py-version }}
       - name: install package
@@ -80,7 +80,7 @@ jobs:
         run: pytest
       - name: create wheel
         run: python3 setup.py bdist_wheel
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: py_${{ matrix.py-version }}_${{ matrix.os}}_build
           path: python-wrapper/dist/**
@@ -92,21 +92,21 @@ jobs:
       run:
         working-directory: ./python-wrapper
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         with:
           name: python-sources
           path: python-wrapper/sensirion_gas_index_algorithm
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: swig-sources
           path: python-wrapper/swig
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: 3.8
       - name: create dist package
         run: python3 setup.py sdist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: py_source_dist
           path: python-wrapper/dist/**
@@ -118,16 +118,16 @@ jobs:
       run:
         working-directory: ./python-wrapper
     steps:    
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
         with:
           name: python-sources
           path: python-wrapper/sensirion_gas_index_algorithm
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: swig-sources
           path: python-wrapper/swig
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: 3.8
           cache: "pip"
@@ -138,7 +138,7 @@ jobs:
       - name: Build documentation
         run: cd ./docs && make html
       - name: Upload html
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: python-wrapper/docs/_build/html
   deploy_pages:
@@ -148,6 +148,7 @@ jobs:
     permissions:
       pages: write # to deploy to Pages
       id-token: write # to verify the deployment originates from an appropriate source
+      actions: read # required by actions/deploy-pages@v4
     # Deploy to the github-pages environment
     environment:
       name: github-pages
@@ -155,7 +156,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
   deploy_pypi:
@@ -166,18 +167,18 @@ jobs:
     needs: ["py3p8_linux_sdist", "build"]
     steps:
       - name: download python source dist artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:          
           path: python-wrapper/dist
           name: py_source_dist
       - name: download win python build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:          
           path: python-wrapper/dist
           merge-multiple: true
           pattern: py_*windows*_build
       - name: download mac build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:          
           path: python-wrapper/dist
           merge-multiple: true
@@ -201,15 +202,15 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: download python source dist artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:          
           path: python-wrapper/dist
           merge-multiple: true
           name: py_source_dist
       - name: download python build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:          
           path: python-wrapper/dist
           merge-multiple: true
@@ -238,4 +239,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # upload sigstore-produced signatures and certificates from dist
         run: |          
-          gh release upload '${{ github.ref_name }}' dist/*.sigstore.json --repo '${{ github.repository }}'      
+          gh release upload '${{ github.ref_name }}' dist/*.sigstore.json --repo '${{ github.repository }}'
